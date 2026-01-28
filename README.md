@@ -12,6 +12,8 @@ src/
 │   └── layout/
 │
 ├── features/             # Casos de uso
+│   ├── checkout/         # Checkout
+│   │   └── components/   # Componentes del checkout
 │   ├── otp/              # Pago por OTP
 │   ├── domiciliation/    # Domiciliación
 │   ├── payment-link/     # Link de Pago

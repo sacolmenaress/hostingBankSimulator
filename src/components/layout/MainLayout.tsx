@@ -2,7 +2,7 @@ import { Link, Outlet } from 'react-router-dom';
 
 export const MainLayout = () => {
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-gray-50 flex flex-col bg-[url('/bgEcommerce.jpg')] bg-cover bg-center bg-fixed">
             <nav className="bg-white shadow-sm border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -12,6 +12,9 @@ export const MainLayout = () => {
                                 {/* Navigation links */}
                                 <Link to="/" className="text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:text-blue-600">
                                     Inicio
+                                </Link>
+                                <Link to="/checkout" className="text-gray-500 px-3 py-2 rounded-md text-sm font-medium hover:text-blue-600">
+                                    Checkout
                                 </Link>
                                 <Link to="/otp" className="text-gray-500 px-3 py-2 rounded-md text-sm font-medium hover:text-blue-600">
                                     OTP

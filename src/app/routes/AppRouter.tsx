@@ -7,6 +7,7 @@ import { OtpPage } from '../../features/OTP/OtpPage';
 import { DomiciliationPage } from '../../features/domiciliation/DomiciliationPage';
 import { PaymentLinkPage } from '../../features/payment-link/PaymentLinkPage';
 import { CreditPage } from '../../features/credit/CreditPage';
+import { CheckoutPage } from '../../features/checkout/CheckoutPage';
 
 export const AppRouter = () => {
     return (
@@ -14,6 +15,7 @@ export const AppRouter = () => {
             {/* Public routes */}
             <Route element={<MainLayout />}>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/otp" element={<OtpPage />} />
                 <Route path="/domiciliation" element={<DomiciliationPage />} />
                 <Route path="/payment-link" element={<PaymentLinkPage />} />

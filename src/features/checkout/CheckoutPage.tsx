@@ -86,10 +86,11 @@ export const CheckoutPage = () => {
                                 <div>
                                     <label className="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">Nombre del pagador</label>
                                     <input
-                                        {...register("name", { required: true })}
-                                        className="w-full bg-white text-gray-900 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        {...register("name", { required: "El nombre es obligatorio" })}
+                                        className={`w-full bg-white text-gray-900 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.name ? 'ring-2 ring-red-500' : ''}`}
                                         placeholder="Ej: Juan Pérez"
                                     />
+                                    {errors.name && <span className="text-red-400 text-xs mt-1 block">{errors.name.message as string}</span>}
                                 </div>
 
                                 <div>
@@ -110,10 +111,15 @@ export const CheckoutPage = () => {
                                         <span className="text-xs text-blue-400 cursor-pointer hover:underline">Cambiar a cuenta</span>
                                     </div>
                                     <input
-                                        {...register("phone", { required: true, maxLength: 11 })}
+                                        {...register("phone", {
+                                            required: "El teléfono es obligatorio",
+                                            maxLength: { value: 11, message: "Máximo 11 dígitos" },
+                                            pattern: { value: /^[0-9]+$/, message: "Solo números" }
+                                        })}
                                         placeholder="04141234567"
-                                        className="w-full bg-white text-gray-900 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className={`w-full bg-white text-gray-900 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.phone ? 'ring-2 ring-red-500' : ''}`}
                                     />
+                                    {errors.phone && <span className="text-red-400 text-xs mt-1 block">{errors.phone.message as string}</span>}
                                 </div>
 
                                 <div>
@@ -128,11 +134,12 @@ export const CheckoutPage = () => {
                                             <option value="E">E</option>
                                         </select>
                                         <input
-                                            {...register("cid", { required: true })}
+                                            {...register("cid", { required: "La cédula es obligatoria" })}
                                             placeholder="12345678"
-                                            className="flex-1 bg-white text-gray-900 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className={`flex-1 bg-white text-gray-900 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.cid ? 'ring-2 ring-red-500' : ''}`}
                                         />
                                     </div>
+                                    {errors.cid && <span className="text-red-400 text-xs mt-1 block">{errors.cid.message as string}</span>}
                                 </div>
 
                                 <Button

@@ -20,10 +20,16 @@ export const sypagoSimulation = {
         console.log("Backend: Iniciando Polling a SyPago...");
         await new Promise(resolve => setTimeout(resolve, 4000));
 
+        // Simulates payment references
+        const sypagoRef = `SYP-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+        const ibpRef = `IBP-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+
         return {
             success: true,
             status: "APPROVED",
-            message: "Pago debitado exitosamente"
+            message: "Pago debitado exitosamente",
+            sypagoReference: sypagoRef,
+            ibpReference: ibpRef
         };
     }
 };

@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/Button';
 import { sypagoSimulation } from './sypago.simulation';
 import { ShoppingCart } from 'lucide-react';
 import { OtpModal } from '../../components/ui/OtpModal';
+import { TransactionResultModal } from '../../components/ui/TransactionResultModal';
 
 //Static cart items (for demo purposes)
 const CART_ITEMS = [
@@ -15,6 +16,19 @@ export const CheckoutPage = () => {
     const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [txId, setTxId] = useState('');
+    const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+    const [paymentData, setPaymentData] = useState<any>(null); // Store form data
+    const [transactionResult, setTransactionResult] = useState<{
+        success: boolean;
+        sypagoReference?: string;
+        ibpReference?: string;
+        amount?: number;
+        recipientName?: string;
+        recipientBank?: string;
+        recipientPhone?: string;
+        recipientId?: string;
+        errorMessage?: string;
+    }>({ success: false });
 
     const totalAmount = CART_ITEMS.reduce((acc, item) => acc + item.price, 0);
 
@@ -26,6 +40,7 @@ export const CheckoutPage = () => {
             const response = await sypagoSimulation.initiatePayment({ ...data, amount: totalAmount });
             if (response.success) {
                 setTxId(response.transactionId);
+                setPaymentData(data); // Save form data for later use
                 setIsOtpModalOpen(true);
             }
         } catch (error) {
@@ -39,12 +54,33 @@ export const CheckoutPage = () => {
         setIsLoading(true);
         try {
             const response = await sypagoSimulation.confirmAndPoll(txId, otpCode);
+            setIsOtpModalOpen(false); // Close OTP modal
+
             if (response.success) {
-                alert('Pago Exitoso. Referencia: ' + txId);
-                window.location.reload();
+                setTransactionResult({
+                    success: true,
+                    sypagoReference: response.sypagoReference,
+                    ibpReference: response.ibpReference,
+                    amount: totalAmount,
+                    recipientName: paymentData?.name,
+                    recipientBank: paymentData?.bank_code,
+                    recipientPhone: paymentData?.phone,
+                    recipientId: `${paymentData?.id_type}-${paymentData?.cid}`
+                });
+            } else {
+                setTransactionResult({
+                    success: false,
+                    errorMessage: response.message || 'Error en la transacción'
+                });
             }
+            setIsResultModalOpen(true);
         } catch (error) {
-            alert('Error en la transacción');
+            setIsOtpModalOpen(false);
+            setTransactionResult({
+                success: false,
+                errorMessage: 'Error al procesar la transacción. Intente nuevamente.'
+            });
+            setIsResultModalOpen(true);
         } finally {
             setIsLoading(false);
         }
@@ -172,6 +208,21 @@ export const CheckoutPage = () => {
                 onClose={() => setIsOtpModalOpen(false)}
                 onConfirm={handleConfirmOtp}
                 isLoading={isLoading}
+            />
+
+            {/* Transaction Result Modal */}
+            <TransactionResultModal
+                isOpen={isResultModalOpen}
+                onClose={() => setIsResultModalOpen(false)}
+                success={transactionResult.success}
+                sypagoReference={transactionResult.sypagoReference}
+                ibpReference={transactionResult.ibpReference}
+                amount={transactionResult.amount}
+                recipientName={transactionResult.recipientName}
+                recipientBank={transactionResult.recipientBank}
+                recipientPhone={transactionResult.recipientPhone}
+                recipientId={transactionResult.recipientId}
+                errorMessage={transactionResult.errorMessage}
             />
         </div>
     );

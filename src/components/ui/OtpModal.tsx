@@ -18,7 +18,7 @@ export const OtpModal: React.FC<OtpModalProps> = ({
     otpLength = 8
 }) => {
     const [otp, setOtp] = useState<string[]>(new Array(otpLength).fill(""));
-    const [timer, setTimer] = useState(30);
+    const [timer, setTimer] = useState(60);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
     useEffect(() => {
@@ -52,6 +52,13 @@ export const OtpModal: React.FC<OtpModalProps> = ({
         }
     };
 
+    const handleResendCode = () => {
+        // Simular el reenvío del código
+        setTimer(60);
+        setOtp(new Array(otpLength).fill(""));
+        inputRefs.current[0]?.focus();
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onConfirm(otp.join(""));
@@ -69,9 +76,21 @@ export const OtpModal: React.FC<OtpModalProps> = ({
                     Por favor ingrese el código de verificación enviado a su dispositivo ({otpLength} dígitos).
                 </p>
 
-                <p className="text-sm text-gray-400 mb-6">
-                    Puede solicitar un nuevo código en: <span className="font-semibold">{timer} segundos</span>
-                </p>
+                {timer > 0 ? (
+                    <p className="text-sm text-gray-400 mb-6">
+                        Puede solicitar un nuevo código en: <span className="font-semibold">{timer} segundos</span>
+                    </p>
+                ) : (
+                    <div className="mb-6">
+                        <button
+                            type="button"
+                            onClick={handleResendCode}
+                            className="text-sm text-blue-600 hover:text-blue-700 font-semibold hover:underline transition-colors"
+                        >
+                            Volver a enviar código
+                        </button>
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     <div className="flex justify-center gap-2">
@@ -108,9 +127,6 @@ export const OtpModal: React.FC<OtpModalProps> = ({
                                 {isLoading ? 'Procesando...' : 'Pagar'}
                             </Button>
                         </div>
-                        <p className="text-sm text-gray-400">
-                            Espere {timer}s
-                        </p>
                     </div>
                 </form>
             </div>

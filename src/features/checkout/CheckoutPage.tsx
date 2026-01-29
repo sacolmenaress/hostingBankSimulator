@@ -7,8 +7,8 @@ import { OtpModal } from '../../components/ui/OtpModal';
 
 //Static cart items (for demo purposes)
 const CART_ITEMS = [
-    { id: 1, name: 'Producto Demo 1', desc: 'Producto de demostración integración SyPago.', price: 6319.75 },
-    { id: 2, name: 'Producto Demo 2', desc: 'Múltiples items en el carrito.', price: 6319.75 },
+    { id: 1, name: 'Producto Demo 1', desc: 'Producto de demostración integración SyPago.', price: 50.25 },
+    { id: 2, name: 'Producto Demo 2', desc: 'Múltiples items en el carrito.', price: 26.74 },
 ];
 
 export const CheckoutPage = () => {
